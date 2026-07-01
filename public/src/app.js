@@ -434,7 +434,7 @@ async function handleTransactionSubmit(event) {
   const direction = els.transactionDirection.value;
   const categoryId = els.transactionCategory.value;
   const category = state.categories.find((item) => item.id === categoryId);
-  const amount = Number.parseFloat(String(els.transactionAmount.value).replace(",", "."));
+  const amount = parseMoneyInput(els.transactionAmount.value);
   const date = els.transactionDate.value;
   const paymentType = els.transactionPayment.value;
   const description = els.transactionDescription.value.trim().slice(0, 160);
@@ -1346,6 +1346,28 @@ function safePhotoUrl(value) {
 
 function roundMoney(value) {
   return Math.round(value * 100) / 100;
+}
+
+function parseMoneyInput(value) {
+  const raw = String(value || "").trim().replace(/\s/g, "");
+  if (!raw) return Number.NaN;
+
+  const hasComma = raw.includes(",");
+  const hasDot = raw.includes(".");
+  let normalized = raw;
+
+  if (hasComma && hasDot) {
+    normalized = raw.lastIndexOf(",") > raw.lastIndexOf(".")
+      ? raw.replace(/\./g, "").replace(",", ".")
+      : raw.replace(/,/g, "");
+  } else if (hasComma) {
+    normalized = raw.replace(",", ".");
+  }
+
+  normalized = normalized.replace(/[^0-9.]/g, "");
+  if ((normalized.match(/\./g) || []).length > 1) return Number.NaN;
+
+  return Number.parseFloat(normalized);
 }
 
 function currentMonthKey(date = new Date()) {
