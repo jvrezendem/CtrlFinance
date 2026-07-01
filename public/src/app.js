@@ -1,4 +1,4 @@
-import { firebaseConfig } from "./firebase-config.js";
+import { firebaseConfig } from "./firebase-config.js?v=20260701-2";
 import { createIcons, iconNode } from "./icons.js";
 
 const FIREBASE_VERSION = "10.12.5";
