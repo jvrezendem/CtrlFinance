@@ -1,4 +1,4 @@
-import { firebaseConfig } from "./firebase-config.js?v=20260701-2";
+import { firebaseConfig } from "./firebase-config.js?v=20260701-3";
 import { createIcons, iconNode } from "./icons.js";
 
 const FIREBASE_VERSION = "10.12.5";
@@ -88,6 +88,7 @@ async function loadFirebaseSdk() {
   return {
     initializeApp: app.initializeApp,
     getAuth: auth.getAuth,
+    getFirestore: firestore.getFirestore,
     browserLocalPersistence: auth.browserLocalPersistence,
     setPersistence: auth.setPersistence,
     onAuthStateChanged: auth.onAuthStateChanged,
