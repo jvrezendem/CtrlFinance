@@ -1,0 +1,56 @@
+name: Deploy Firebase Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "functions/**"
+      - "firestore.rules"
+      - "firestore.indexes.json"
+      - "firebase.json"
+      - ".github/workflows/firebase-backend.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-key.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Write Firebase service account
+        run: printf '%s' '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$GOOGLE_APPLICATION_CREDENTIALS"
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Install functions dependencies
+        run: npm install --prefix functions
+
+      - name: Write function params
+        run: |
+          {
+            echo "SENDER_EMAIL=${SENDER_EMAIL:-no-reply@ctrlfinance.app}"
+            echo "APP_URL=${APP_URL:-https://example.github.io/ctrlfinance/}"
+          } > functions/.env
+        env:
+          SENDER_EMAIL: ${{ vars.SENDER_EMAIL }}
+          APP_URL: ${{ vars.APP_URL }}
+
+      - name: Check functions syntax
+        run: npm --prefix functions run check
+
+      - name: Deploy rules, indexes and functions
+        run: firebase deploy --project "$FIREBASE_PROJECT_ID" --only firestore:rules,firestore:indexes,functions

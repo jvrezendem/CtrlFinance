@@ -1,0 +1,11 @@
+{
+  "name": "ctrlfinance",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check:functions": "node --check functions/index.js",
+    "serve": "python -m http.server 4173 --directory public",
+    "emulators": "firebase emulators:start --only auth,firestore,functions",
+    "deploy:backend": "firebase deploy --only firestore:rules,firestore:indexes,functions"
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title">
+  <title>CtrlFinance</title>
+  <rect width="96" height="96" rx="22" fill="#15121c"/>
+  <path d="M25 61.5V34.6c0-5.3 4.3-9.6 9.6-9.6h31.2c3.1 0 5.6 2.5 5.6 5.6v4.7H40.2c-5.8 0-10.5 4.7-10.5 10.5v15.7H25Z" fill="#f8fafc"/>
+  <path d="M35.3 45.8c0-3.7 3-6.7 6.7-6.7h30.7c2.8 0 5 2.2 5 5v18.5c0 4.6-3.8 8.4-8.4 8.4H42c-3.7 0-6.7-3-6.7-6.7V45.8Z" fill="#8b5cf6"/>
+  <path d="M60.5 54.7a7.2 7.2 0 1 1 14.4 0 7.2 7.2 0 0 1-14.4 0Z" fill="#d8b4fe"/>
+  <path d="M43.9 50.1h11.9v5.1H43.9v-5.1Zm0 9.4h19.7v5.1H43.9v-5.1Z" fill="#15121c"/>
+</svg>
