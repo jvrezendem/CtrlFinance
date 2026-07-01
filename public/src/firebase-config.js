@@ -1,9 +1,8 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyCy89L4InfW0slTieCMRKphvEz76HAbRto",
-  authDomain: "ctrlfinance-80fa3.firebaseapp.com",
-  projectId: "ctrlfinance-80fa3",
-  storageBucket: "ctrlfinance-80fa3.firebasestorage.app",
-  messagingSenderId: "745363207675",
-  appId: "1:745363207675:web:378d4a6d1f6dce0741075e",
-  measurementId: "G-T3VE0XCRTW"
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  projectId: "SEU_PROJETO",
+  storageBucket: "SEU_PROJETO.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:0000000000000000000000"
 };

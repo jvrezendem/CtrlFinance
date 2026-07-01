@@ -65,6 +65,18 @@ O workflow `.github/workflows/github-pages.yml` publica a pasta `public/`.
 
 No GitHub, habilite Pages com source `GitHub Actions`. Depois faça push na branch `main`.
 
+Antes do deploy, configure a integração Firebase no GitHub:
+
+- Secret `FIREBASE_API_KEY`: chave Web do app Firebase.
+- Variable `FIREBASE_AUTH_DOMAIN`: exemplo `ctrlfinance-xxxx.firebaseapp.com`.
+- Variable `FIREBASE_PROJECT_ID`: ID do projeto Firebase.
+- Variable `FIREBASE_STORAGE_BUCKET`: bucket do projeto.
+- Variable `FIREBASE_MESSAGING_SENDER_ID`: sender ID do app Web.
+- Variable `FIREBASE_APP_ID`: app ID Web.
+- Variable `FIREBASE_MEASUREMENT_ID`: opcional, se usar Analytics.
+
+O arquivo `public/src/firebase-config.js` fica com placeholders no repositório. Durante o deploy, o GitHub Actions gera a configuração real no artifact publicado.
+
 Para o workflow do backend Firebase, configure estes itens no repositório:
 
 - Secret `FIREBASE_PROJECT_ID`: ID do projeto Firebase.
