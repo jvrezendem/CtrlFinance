@@ -1,6 +1,7 @@
 "use strict";
 
 const { setGlobalOptions } = require("firebase-functions/v2");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { onDocumentWritten } = require("firebase-functions/v2/firestore");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { defineSecret, defineString } = require("firebase-functions/params");
@@ -54,6 +55,57 @@ exports.dailySpendingAlertSweep = onSchedule(
     }
   }
 );
+
+exports.deleteUserAccount = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Entre novamente para apagar sua conta.");
+  }
+
+  const authTime = Number(request.auth.token.auth_time || 0);
+  const signedInSecondsAgo = Math.floor(Date.now() / 1000) - authTime;
+  if (!authTime || signedInSecondsAgo > 300) {
+    throw new HttpsError(
+      "failed-precondition",
+      "Por seguranca, entre novamente antes de apagar sua conta."
+    );
+  }
+
+  const uid = request.auth.uid;
+  const userRef = db.collection("users").doc(uid);
+
+  try {
+    await Promise.all([
+      deleteCollectionInBatches(userRef.collection("transactions")),
+      deleteCollectionInBatches(userRef.collection("categories")),
+      deleteCollectionInBatches(userRef.collection("alerts"))
+    ]);
+    await userRef.delete();
+    await admin.auth().deleteUser(uid);
+    logger.info("CtrlFinance account deleted", { uid });
+    return { success: true };
+  } catch (error) {
+    logger.error("Unable to delete CtrlFinance account", {
+      uid,
+      code: error.code,
+      message: error.message
+    });
+    throw new HttpsError(
+      "internal",
+      "Nao foi possivel concluir a exclusao. Tente novamente."
+    );
+  }
+});
+
+async function deleteCollectionInBatches(collectionRef) {
+  while (true) {
+    const snapshot = await collectionRef.limit(400).get();
+    if (snapshot.empty) return;
+
+    const batch = db.batch();
+    snapshot.docs.forEach((document) => batch.delete(document.ref));
+    await batch.commit();
+  }
+}
 
 async function evaluateUserMonth(uid, monthKey) {
   const userRef = db.collection("users").doc(uid);

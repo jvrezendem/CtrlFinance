@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "check": "node --check public/src/theme-init.js && node --check public/src/icons.js && node --check public/src/app.js && npm run check:functions",
     "check:functions": "node --check functions/index.js",
     "serve": "python -m http.server 4173 --directory public",
     "emulators": "firebase emulators:start --only auth,firestore,functions",

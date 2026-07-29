@@ -10,14 +10,18 @@ CtrlFinance é um site de controle financeiro para GitHub Pages com backend Fire
 - Dashboard com saldo, entradas, gastos, média mensal, gráficos, tabelas de entradas/gastos, gastos por categoria e categorias com maior/menor gasto.
 - Relatório mensal com comparação contra mês anterior e média mensal.
 - Emails automáticos quando o gasto do mês supera a média mensal, supera o mês anterior ou uma categoria supera o mesmo gasto do mês anterior.
+- Temas claro, escuro e automático, com preferência persistida antes da primeira renderização.
+- Perfil com dados pessoais, preferências de alertas, conexão Google e exclusão segura da conta em duas etapas.
+- Navegação flutuante e telas adaptadas para mobile, tablet e desktop.
 
 ## Estrutura
 
 ```text
 public/                    Site estático para GitHub Pages
-public/src/app.js          SPA, gráficos, validações e integração Firebase
+public/src/app.js          SPA, rotas, gráficos, perfil, validações e integração Firebase
+public/src/theme-init.js   Aplicação antecipada do tema salvo
 public/src/firebase-config.js
-functions/                 Cloud Functions de alertas por email
+functions/                 Cloud Functions de alertas e exclusão segura da conta
 firestore.rules            Regras de segurança do banco
 .github/workflows/         Deploy do Pages e do backend Firebase
 ```
@@ -103,4 +107,5 @@ Acesse `http://localhost:4173`.
 - Emails são enviados somente por Cloud Functions; a chave SendGrid nunca vai para o frontend.
 - CSP via meta tag no GitHub Pages e headers extras caso o mesmo `public/` seja hospedado no Firebase Hosting.
 - Dados do usuário são renderizados com `textContent`; o app evita interpolar HTML com conteúdo do usuário.
+- A exclusão de conta exige autenticação recente, confirmação em duas etapas e execução privilegiada no backend.
 - O repositório pode ser público porque a configuração Firebase Web não é segredo. Secrets reais ficam no Firebase/GitHub.
